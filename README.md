@@ -10,7 +10,7 @@ Long-read sequencing became widely accessible with the release of the MinION by 
 
 Oxford Nanopore sequencing provides a balance of read length, accessibility, and cost that makes it well suited for bacterial genome assembly (Wang et al., 2021). Unlike short-read sequencing platforms such as Illumina or MGI, which produce reads of only a few hundred base pairs, nanopore sequencing generates long reads capable of spanning multidrug resistance (MDR) regions and other complex genomic structures (Peng et al., 2025). This is particularly important for bacterial genomes, where antimicrobial resistance genes (ARGs) and mobile genetic elements such as plasmids, transposons, and integrons often occur within repetitive or structurally complex regions (Peng et al., 2025). In addition, ONT sequencing enables real-time data generation, portability, and relatively low sequencing costs, while barcoding strategies allow multiple bacterial genomes to be sequenced simultaneously on a single flow cell, reducing per-genome sequencing costs and supporting rapid antimicrobial resistance surveillance (Peng et al., 2025).
 
-Early ONT sequencing technologies were limited by raw read accuracies of approximately 90%, constraining their use for accurate genome assembly (Peng et al., 2025). Continued improvements in nanopore chemistry and basecalling algorithms have substantially increased sequencing accuracy (Wang et al., 2024). The introduction of the R10 nanopore, featuring a longer barrel and dual reader head, improved basecalling accuracy in homopolymeric regions, while subsequent R10.4 and R10.4.1 flow cells and Q20+ chemistry enabled raw read accuracies exceeding 99% (Wang et al., 2021). These advances have made long-read-only microbial genome assembly increasingly feasible.
+Early ONT sequencing technologies were limited by raw read accuracies of approximately 90%, constraining their use for accurate genome assembly (Peng et al., 2025). Continued improvements in nanopore chemistry and basecalling algorithms have substantially increased sequencing accuracy (Wang et al., 2024). The introduction of the R10 nanopore, featuring a longer barrel and dual reader head, improved basecalling accuracy in homopolymeric regions, while subsequent R10.4 and R10.4.1 flow cells and Q20+ chemistry enabled raw read accuracies exceeding 99% (Zhang et al., 2023). These advances have made long-read-only microbial genome assembly increasingly feasible (Zhang et al., 2023).
 
 Despite improved platform accuracy, long-read datasets remain heterogeneous in read length and per-read quality, which can negatively impact genome assembly if not addressed (Pardo-Palacios, 2024). Low-quality or short reads may introduce assembly errors and reduce contiguity, making read-level quality assessment and filtering critical preprocessing steps in long-read genome assembly workflows (Jiao et al., 2017).
 
@@ -35,4 +35,21 @@ To compare the assembly to sequencing reads and support downstream inspection, a
 
 ### 5. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
+
+## Citations 
+Zhang, T., Li, H., Ma, S., Cao, J., Liao, H., Huang, Q., & Chen, W. (2023). The newest Oxford Nanopore R10.4.1 full-length 16S rRNA sequencing enables the accurate resolution of species-level microbial community profiling. Applied and environmental microbiology, 89(10), e0060523. https://doi.org/10.1128/aem.00605-23
+
+Oxford Nanopore Technologies. (2025, February 19). How Oxford Nanopore sequencing works. Oxford Nanopore Technologies. Retrieved 2026, January 16, from https://nanoporetech.com/blog/how-oxford-nanopore-sequencing-works
+
+Peng, K., Li, C., Wang, Q. et al. The applications and advantages of nanopore sequencing in bacterial antimicrobial resistance surveillance and research. npj Antimicrob Resist 3, 87 (2025). https://doi.org/10.1038/s44259-025-00157-5 
+
+Wang, Y., Zhao, Y., Bollas, A. et al. Nanopore sequencing technology, bioinformatics and applications. Nat Biotechnol 39, 1348–1365 (2021). https://doi.org/10.1038/s41587-021-01108-x 
+
+Pardo-Palacios, F.J., Wang, D., Reese, F. et al. Systematic assessment of long-read RNA-seq methods for transcript identification and quantification. Nat Methods 21, 1349–1363 (2024). https://doi.org/10.1038/s41592-024-02298-3
+
+Wang, Z., Fang, Y., Liu, Z. et al. Adapting nanopore sequencing basecalling models for modification detection via incremental learning and anomaly detection. Nat Commun 15, 7148 (2024). https://doi.org/10.1038/s41467-024-51639-5
+
+Jiao, W. B., Accinelli, G. G., Hartwig, et al. Improving and correcting the contiguity of long-read genome assemblies of three plant species using optical mapping and chromosome conformation capture data. Genome research (2017), 27(5), 778–786. https://doi.org/10.1101/gr.213652.116 
+
+Kent, W James. “BLAT--the BLAST-like alignment tool.” Genome research vol. 12,4 (2002): 656-64. doi:10.1101/gr.229202
 
