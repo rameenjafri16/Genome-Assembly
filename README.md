@@ -73,6 +73,8 @@ Kent, W James. “BLAT--the BLAST-like alignment tool.” Genome research vol. 1
 
 
 ## Software & Resources
+A note on **reproducibility**:
+All analyses were performed using open-source software. Software versions and parameters are documented to support reproducibility of the workflow.
 
 **Core tools**
 - Flye (assembly): https://github.com/fenderglass/Flye
