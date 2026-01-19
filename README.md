@@ -1,10 +1,11 @@
 # Genome-Assembly
-This repository contains the workflow for assembling and analyzing a Salmonella enterica genome as part of a bioinformatics methods assignment. Raw Oxford Nanopore sequencing reads are assembled into a consensus genome, which is then compared to a reference genome obtained from NCBI using alignment
 
-General overview
-Long-read sequencing data generated using Oxford Nanopore Technologies were used to assemble the genome of Salmonella enterica using the Flye assembler. The resulting assembly was compared to a reference genome obtained from the National Center for Biotechnology Information (NCBI) through sequence alignment using minimap2. The goal of this analysis is to evaluate the feasibility, advantages, and limitations of long-read genome assembly and reference-based alignment for bacterial genomes.
+## General Overview 
+This project processes long-read sequencing data generated using Oxford Nanopore Technologies (ONT) to assemble the genome of Salmonella enterica. Raw sequencing reads are first inspected and filtered to assess read length and quality, ensuring that low-quality and short reads are removed prior to assembly. The filtered reads are then assembled de novo using the Flye assembler, producing a highly contiguous genome assembly.
 
-Introduction
+To evaluate assembly quality, the resulting contig is compared to a reference genome obtained from the National Center for Biotechnology Information (NCBI) using minimap2 for long-read alignment. Alignment outputs are processed and visualized using genome browser tools to assess coverage patterns and mapping consistency across the assembly. Together, this workflow integrates quality control, assembly, alignment, and visualization to evaluate the feasibility, advantages, and limitations of long-read genome assembly and reference-based comparison for bacterial genomes.
+
+## Introduction
 Long-read sequencing technologies became widely accessible with the introduction of the MinION by Oxford Nanopore Technologies (ONT) in 2014, enabling real-time sequencing of native DNA and RNA (Oxford Nanopore Technologies, 2025). Since then, additional long-read platforms have emerged, including Pacific Biosciences (PacBio) and high-throughput systems such as QitanTech and CycloneSEQ (Zhang et al., 2023). These technologies vary substantially in accuracy, cost, and accessibility. PacBio HiFi sequencing can achieve base-level accuracies exceeding 99.99%, but requires expensive instrumentation and infrastructure, limiting its accessibility for smaller laboratories and field-based applications (Wang et al., 2021). Other long-read platforms can generate reads suitable for genome assembly but often exhibit lower base-level accuracy, with reported average read lengths of approximately 11.6 kb and quality scores around Q14.4 (Peng et al., 2025).
 
 Oxford Nanopore sequencing offers several advantages that make it well suited for bacterial genome assembly. Unlike high-throughput short-read sequencing platforms such as Illumina or MGI, which typically produce reads of only a few hundred base pairs, nanopore sequencing generates long reads capable of spanning entire multidrug resistance (MDR) regions and complex genetic structures (Peng et al., 2025). This enables improved reconstruction of bacterial genomes and more precise identification of antimicrobial resistance genes (ARGs) and mobile genetic elements, including plasmids, transposons, and integrons (Peng et al., 2025). In addition, ONT sequencing provides real-time data generation, portability, and relatively low cost. Compact devices such as the MinION support on-site sequencing in clinical, environmental, and resource-limited settings. Barcoding strategies further allow multiple bacterial genomes to be sequenced in parallel on a single flow cell, reducing per-genome sequencing costs and supporting rapid antimicrobial resistance surveillance during infectious disease outbreaks (Peng et al., 2025).
@@ -17,5 +18,21 @@ As ONT read lengths increased beyond 100 kb, minimap2 was developed using a seed
 
 Overall, recent advances in ONT sequencing chemistry and long-read alignment algorithms have made long-read-only bacterial genome assembly increasingly viable. However, limitations remain, including sensitivity to parameter choices, potential residual base-level errors, and reliance on reference genome quality during alignment. This study applies these approaches to assemble and align the genome of Salmonella enterica to evaluate the strengths and limitations of long-read genome assembly and reference-based comparison.
 
-Proposed Methods
-coming soon!
+## Proposed Methods
+
+### 1. Sequencing data acquisition and characteristics
+Long-read sequencing data were obtained from the NCBI Sequence Read Archive under accession SRR32410565 and correspond to Salmonella enterica. The dataset consists of Oxford Nanopore sequencing reads in FASTQ format generated using R10 chemistry, which produces long reads with variable length and base quality. Because long-read datasets often contain a mixture of high- and low-quality reads, quality control and filtering were performed prior to genome assembly.
+
+### 2. Read quality control and filtering
+Read quality was assessed both before and after filtering using NanoPlot, which generates summary statistics and an HTML report describing read length distributions and per-read quality patterns for long-read sequencing data. NanoPlot was used descriptively to evaluate whether the raw dataset contained sufficient read length and quality for de novo genome assembly, and to confirm that filtering improved overall read quality.
+
+Reads were filtered using Filtlong to remove short and low-quality reads. Filtering thresholds were chosen to retain informative long reads while discarding reads likely to introduce errors during assembly. Reads shorter than 1000 bp were removed (--min_length 1000), only the top 90% of reads ranked by quality were retained (--keep_percent 90), and reads with mean quality scores below Q20 were excluded (-q 20). The filtered FASTQ output was then re-evaluated with NanoPlot to confirm improved read quality and a clear cutoff corresponding to the applied thresholds.
+
+### 3. Genome assembly
+Filtered reads were assembled de novo using Flye with the --nano-hq preset, which is intended for higher-accuracy nanopore reads. Flye was selected because it is optimized for long-read assembly and can generate contiguous assemblies from error-prone long reads. The assembly produced a single contig, consistent with a highly contiguous bacterial genome assembly suitable for downstream comparison to a reference genome.
+
+### 4. Reference-based alignment and file processing
+To compare the assembly to sequencing reads and support downstream inspection, alignments were generated using minimap2. Minimap2 was run using the ONT mapping preset and configured to output alignments in SAM format using 32 threads. The resulting SAM file was intended for conversion into compressed, indexed formats for visualization. SAM outputs were converted to BAM, sorted, and indexed using samtools to ensure compatibility with genome browsers and efficient navigation across the genome.
+
+### 5. Visualization
+Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
