@@ -33,22 +33,6 @@ Overall, advances in ONT sequencing chemistry, read preprocessing, and long-read
 
 
 
-## Workflow Summary
-
-Raw reads (FASTQ, ONT R10)
-        ↓
-Read QC (NanoPlot)
-        ↓
-Read filtering (Filtlong)
-        ↓
-Genome assembly (Flye)
-        ↓
-Reference alignment (minimap2 + samtools)
-        ↓
-Visualization (IGV)
-
-
-
 ## Proposed Methods
 ### 1. Sequencing data acquisition and characteristics
 Long-read sequencing data were obtained from the NCBI Sequence Read Archive under accession SRR32410565 and correspond to Salmonella enterica. The dataset consists of Oxford Nanopore sequencing reads in FASTQ format generated using R10 chemistry, which produces long reads with variable length and base quality. Because long-read datasets often contain a mixture of high- and low-quality reads, quality control and filtering were performed prior to genome assembly.
