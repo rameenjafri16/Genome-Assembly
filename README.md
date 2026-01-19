@@ -5,6 +5,7 @@ This project processes long-read sequencing data generated using Oxford Nanopore
 
 To evaluate assembly quality, the resulting contig is compared to a reference genome obtained from the National Center for Biotechnology Information (NCBI) using minimap2 for long-read alignment. Alignment outputs are processed and visualized using genome browser tools to assess coverage patterns and mapping consistency across the assembly. Together, this workflow integrates quality control, assembly, alignment, and visualization to evaluate the feasibility, advantages, and limitations of long-read genome assembly and reference-based comparison for bacterial genomes.
 
+---
 
 ## Introduction
 Long-read sequencing became widely accessible with the release of the MinION by Oxford Nanopore Technologies (ONT) in 2014, enabling real-time sequencing of native DNA and RNA (Peng et al., 2025). Since then, additional long-read platforms have emerged, including Pacific Biosciences (PacBio) and high-throughput systems such as QitanTech and CycloneSEQ (Peng et al., 2025). These platforms differ in accuracy, cost, and accessibility, influencing their suitability for routine bacterial genome assembly (Peng et al., 2025). PacBio HiFi sequencing can achieve base-level accuracies exceeding 99.99% but requires expensive instrumentation and infrastructure, limiting its use in smaller laboratories and field-based applications (Peng et al., 2025). Other long-read platforms can generate reads of sufficient length for genome assembly but often exhibit lower base-level accuracy, with reported average read lengths of approximately 11.6 kb and quality scores around Q14.4 (Peng et al., 2025).
@@ -19,6 +20,7 @@ Accurate comparison of an assembled genome to a reference requires effective ali
 
 Overall, advances in ONT sequencing chemistry, read preprocessing, and long-read alignment algorithms have made long-read-only bacterial genome assembly increasingly viable (Wang et al., 2021). However, outcomes remain sensitive to parameter choices, residual sequencing errors, and reference genome quality. In this study, these approaches are applied to assemble and align the genome of Salmonella enterica to evaluate the strengths and limitations of long-read genome assembly and reference-based comparison (Wang et al., 2021).
 
+---
 
 ## Proposed Methods
 ### 1. Sequencing data acquisition and characteristics
@@ -38,6 +40,7 @@ To compare the assembly to sequencing reads and support downstream inspection, a
 ### 5. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
 
+---
 
 ## Citations 
 Zhang, T., Li, H., Ma, S., Cao, J., Liao, H., Huang, Q., & Chen, W. (2023). The newest Oxford Nanopore R10.4.1 full-length 16S rRNA sequencing enables the accurate resolution of species-level microbial community profiling. Applied and environmental microbiology, 89(10), e0060523. https://doi.org/10.1128/aem.00605-23
@@ -55,4 +58,25 @@ Wang, Z., Fang, Y., Liu, Z. et al. Adapting nanopore sequencing basecalling mode
 Jiao, W. B., Accinelli, G. G., Hartwig, et al. Improving and correcting the contiguity of long-read genome assemblies of three plant species using optical mapping and chromosome conformation capture data. Genome research (2017), 27(5), 778–786. https://doi.org/10.1101/gr.213652.116 
 
 Kent, W James. “BLAT--the BLAST-like alignment tool.” Genome research vol. 12,4 (2002): 656-64. doi:10.1101/gr.229202
+
+---
+
+## Software & Resources
+
+**Core tools**
+- Flye (assembly): https://github.com/fenderglass/Flye
+- minimap2 (alignment): https://github.com/lh3/minimap2
+- samtools (SAM/BAM processing): https://github.com/samtools/samtools
+
+**QC + filtering**
+- NanoPlot (QC reporting): https://github.com/wdecoster/NanoPlot
+- Filtlong (read filtering): https://github.com/rrwick/Filtlong
+
+**Visualization**
+- IGV (genome browser): https://software.broadinstitute.org/software/igv/
+
+**Data source**
+- NCBI SRA record (SRR32410565): https://www.ncbi.nlm.nih.gov/sra/SRR32410565
+
+
 
