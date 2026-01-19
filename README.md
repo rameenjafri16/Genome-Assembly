@@ -5,6 +5,7 @@ This project processes long-read sequencing data generated using Oxford Nanopore
 
 To evaluate assembly quality, the resulting contig is compared to a reference genome obtained from the National Center for Biotechnology Information (NCBI) using minimap2 for long-read alignment. Alignment outputs are processed and visualized using genome browser tools to assess coverage patterns and mapping consistency across the assembly. Together, this workflow integrates quality control, assembly, alignment, and visualization to evaluate the feasibility, advantages, and limitations of long-read genome assembly and reference-based comparison for bacterial genomes.
 
+
 ## Introduction
 Long-read sequencing became widely accessible with the release of the MinION by Oxford Nanopore Technologies (ONT) in 2014, enabling real-time sequencing of native DNA and RNA (Peng et al., 2025). Since then, additional long-read platforms have emerged, including Pacific Biosciences (PacBio) and high-throughput systems such as QitanTech and CycloneSEQ (Peng et al., 2025). These platforms differ in accuracy, cost, and accessibility, influencing their suitability for routine bacterial genome assembly (Peng et al., 2025). PacBio HiFi sequencing can achieve base-level accuracies exceeding 99.99% but requires expensive instrumentation and infrastructure, limiting its use in smaller laboratories and field-based applications (Peng et al., 2025). Other long-read platforms can generate reads of sufficient length for genome assembly but often exhibit lower base-level accuracy, with reported average read lengths of approximately 11.6 kb and quality scores around Q14.4 (Peng et al., 2025).
 
@@ -17,6 +18,7 @@ Despite improved platform accuracy, long-read datasets remain heterogeneous in r
 Accurate comparison of an assembled genome to a reference requires effective alignment of long, error-prone reads or contigs (Jiao et al., 2017). Alignment tools originally designed for Sanger or short-read sequencing data are poorly suited for long-read sequencing due to higher error rates and read lengths (Kent, 2002; Wang et al., 2021). Specialized long-read aligners were therefore developed, and as ONT read lengths increased beyond 100 kb, minimap2 was introduced using a seed–chain–align strategy optimized for long-read data (Wang et al., 2021). Benchmarking studies have shown that minimap2 achieves faster runtimes than alternative long-read aligners without sacrificing accuracy, making it well suited for reference-based alignment of genomic ONT data (Wang et al., 2021). Visualization of alignment results provides an additional qualitative evaluation step, allowing assessment of coverage patterns, mapping consistency, and potential assembly artifacts.
 
 Overall, advances in ONT sequencing chemistry, read preprocessing, and long-read alignment algorithms have made long-read-only bacterial genome assembly increasingly viable (Wang et al., 2021). However, outcomes remain sensitive to parameter choices, residual sequencing errors, and reference genome quality. In this study, these approaches are applied to assemble and align the genome of Salmonella enterica to evaluate the strengths and limitations of long-read genome assembly and reference-based comparison (Wang et al., 2021).
+
 
 ## Proposed Methods
 ### 1. Sequencing data acquisition and characteristics
@@ -35,6 +37,7 @@ To compare the assembly to sequencing reads and support downstream inspection, a
 
 ### 5. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
+
 
 ## Citations 
 Zhang, T., Li, H., Ma, S., Cao, J., Liao, H., Huang, Q., & Chen, W. (2023). The newest Oxford Nanopore R10.4.1 full-length 16S rRNA sequencing enables the accurate resolution of species-level microbial community profiling. Applied and environmental microbiology, 89(10), e0060523. https://doi.org/10.1128/aem.00605-23
