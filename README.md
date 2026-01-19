@@ -73,9 +73,6 @@ Kent, W James. “BLAT--the BLAST-like alignment tool.” Genome research vol. 1
 
 
 ## Software & Resources
-A note on **reproducibility**:
-All analyses were performed using open-source software. Software versions and parameters are documented to support reproducibility of the workflow.
-
 **Core tools**
 - Flye (assembly): https://github.com/fenderglass/Flye
 - minimap2 (alignment): https://github.com/lh3/minimap2
@@ -90,6 +87,21 @@ All analyses were performed using open-source software. Software versions and pa
 
 **Data source**
 - NCBI SRA record (SRR32410565): https://www.ncbi.nlm.nih.gov/sra/SRR32410565
+
+## Software Versions
+A note on **reproducibility**:
+All software was installed via **bioconda** and executed within a conda environment on an **Ubuntu virtual machine**.
+All analyses were performed using open-source software. Software versions and parameters are documented to support reproducibility of the workflow.
+
+| Tool | Version |
+|-----|--------|
+| Flye | 2.9.6-b1802 |
+| NanoPlot | 1.46.1 |
+| Filtlong | 0.3.1 |
+| minimap2 | 2.30-r1287 |
+| samtools | 1.22.1 |
+
+
 
 
 
