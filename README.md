@@ -88,7 +88,7 @@ Kent, W James. “BLAT--the BLAST-like alignment tool.” Genome research vol. 1
 **Data source**
 - NCBI SRA record (SRR32410565): https://www.ncbi.nlm.nih.gov/sra/SRR32410565
 
-## Software Versions & Reproducability
+## Software Versions & Reproducibility
 All software was installed via **bioconda** and executed within a conda environment on an **Ubuntu virtual machine**.
 All analyses were performed using open-source software. Software versions and parameters are documented to support reproducibility of the workflow.
 
