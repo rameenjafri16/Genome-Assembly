@@ -177,7 +177,7 @@ Variant calling was performed using the sorted BAM file generated from minimap2.
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
 
 #### Coverage Analysis
-Read coverage across the reference genome was visualized using R (version 4.x) with the following packages:
+Read coverage across the reference genome was visualized using R (version 4.5.2) with the following packages:
 
 ggplot2 - for creating publication-quality plots
 dplyr - for data manipulation
@@ -186,12 +186,11 @@ gridExtra - for multi-panel figure layout
 scales - for axis formatting
 
 Coverage metrics were extracted from the sorted BAM file using samtools coverage, which provided per-contig statistics including mean depth, coverage percentage, and mapping quality. The R scripts (coverage_simple.R and coverage_analysis.R) generated bar plots comparing coverage metrics between the chromosome (NC_003197.2) and plasmid (NC_003277.2).
-
-Complete R scripts are available in the repository.
+*Complete R scripts are available in the repository.*
 
 #### Variant Density Visualization
 Genome-wide variant distribution was visualized using a circular plot created with R package circlize and tidyverse. Variants were filtered for quality scores Q≥20 from the Clair3 VCF output. The circular plot displays:
-Script available in the repository. 
+*Script available in the repository.*
 
 ## Results 
 
@@ -262,14 +261,23 @@ Robertson, J., Schonfeld, J., Bessonov, K., Bastedo, P., & Nash, J. H. E. (2023)
 All software was installed via **bioconda** and executed within a conda environment on an **Ubuntu virtual machine**.
 All analyses were performed using open-source software. Software versions and parameters are documented to support reproducibility of the workflow.
 
-| Tool | Version |
-|-----|--------|
+
+ Tool | Version |
+|------|---------|
 | Flye | 2.9.6-b1802 |
+| Medaka | 1.11.3 |
 | NanoPlot | 1.46.1 |
 | Filtlong | 0.3.1 |
 | minimap2 | 2.30-r1287 |
 | samtools | 1.22.1 |
-
+| Clair3 | 1.0.10 |
+| QUAST | 5.2.0 |
+| IGV | 2.16.2 |
+| R | 4.3.1 |
+| ggplot2 | 3.4.4 |
+| dplyr | 1.1.3 |
+| tidyr | 1.3.0 |
+| circlize | 0.4.15 |
 
 
 
