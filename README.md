@@ -200,6 +200,8 @@ The Medaka-polished assembly produced three contigs with a total length of 5,104
 
 #### Read Alignment and Variant Analysis
 
+<img width="1674" height="918" alt="image" src="https://github.com/user-attachments/assets/21abd60e-f6f6-49b1-9876-343a0082d384" />
+
 Raw read alignment to the reference genome showed 183,082 reads aligning to the chromosome (NC_003197.2), achieving 97.83% coverage at a mean depth of 150.97x with a mean mapping quality of 59.5. The plasmid (NC_003277.2) had 4,186 aligned reads with 45.74% coverage at a mean depth of 98.02x and a mean mapping quality of 51.7. Mean base quality scores were 41.3 for the chromosome and 41.6 for the plasmid. Variant calling using Clair3 with quality filtering (Q≥20) identified 9,658 variants across the genome, comprising 8,647 SNPs (89.5%), 421 insertions (4.4%), and 590 deletions (6.1%). The chromosome contained 2,295 variants across 4.86 Mb (0.47 variants per kb), while the plasmid contained 7,363 variants across 0.09 Mb (82.0 variants per kb), representing a 174-fold higher variant density on the plasmid. Circular visualization of variant density showed relatively uniform SNP distribution across the chromosome with occasional concentration zones, while plasmid variants clustered in regions that aligned to the reference sequence.
 
 ## Discussion 
