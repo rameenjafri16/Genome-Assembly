@@ -70,7 +70,7 @@ Filtering reduced low-quality tails and enriched for longer reads suitable for a
 ### 3. Genome assembly
 Filtered reads were assembled de novo using Flye, a repeat-graph–based assembler optimized for long, error-prone nanopore sequencing data.
 
-```bash
+```
 flye -t 4 \
      --genome-size 4.5m \
      --asm-coverage 100 \
@@ -85,6 +85,21 @@ flye -t 4 \
 ```--nano-hq``` is appropriate for high-accuracy ONT chemistries and enables internal error correction tuned for improved base quality.
 
 Assembly metrics and contig information were obtained from Flye output files, including statistics describing total assembly length, number of contigs, N50, and coverage estimates, which are used for downstream evaluation and comparison.
+
+
+## 3.1 Assembly polishing
+Although long-read assemblers generate highly contiguous genomes, residual base-level errors may remain due to systematic sequencing inaccuracies. To improve consensus accuracy, the Flye assembly was polished using Medaka, a neural network–based polishing tool developed for Oxford Nanopore data.
+
+```
+medaka_consensus \
+  -i SRR32410565.fastq \
+  -d flye_output_q20/assembly.fasta \
+  -o medaka_polish \
+  -t 4 \
+  -m r1041_e82_400bps_sup_v5.0.0
+```
+The resulting polished consensus sequence (medaka_polish/consensus.fasta) was used for subsequent reference comparisons, quality assessment, and variant analysis.
+
 
 ### 4. Reference-based alignment and file processing
 To compare the assembly to sequencing reads and support downstream inspection, alignments were generated using minimap2. Minimap2 was run using the ONT mapping preset and configured to output alignments in SAM format using 32 threads. The resulting SAM file was intended for conversion into compressed, indexed formats for visualization. SAM outputs were converted to BAM, sorted, and indexed using samtools to ensure compatibility with genome browsers and efficient navigation across the genome.
