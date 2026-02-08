@@ -44,7 +44,9 @@ Because ONT datasets typically contain heterogeneous read lengths and variable p
 ### Initial quality assessment
 Raw ONT reads were first evaluated using NanoPlot to characterize read length distributions, sequencing yield, and per-read quality metrics.
 
-```NanoPlot --fastq SRR32410565.fastq -o nanoplot_output```
+```
+NanoPlot --fastq SRR32410565.fastq -o nanoplot_output
+```
 
 The generated HTML report (NanoPlot-report.html) was inspected to determine whether the dataset contained sufficient long, high-quality reads to support de novo assembly.
 
@@ -66,7 +68,23 @@ Filtering reduced low-quality tails and enriched for longer reads suitable for a
 
 
 ### 3. Genome assembly
-Filtered reads were assembled de novo using Flye with the --nano-hq preset, which is intended for higher-accuracy nanopore reads. Flye was selected because it is optimized for long-read assembly and can generate contiguous assemblies from error-prone long reads. The assembly produced a single contig, consistent with a highly contiguous bacterial genome assembly suitable for downstream comparison to a reference genome.
+Filtered reads were assembled de novo using Flye, a repeat-graph–based assembler optimized for long, error-prone nanopore sequencing data.
+
+```bash
+flye -t 4 \
+     --genome-size 4.5m \
+     --asm-coverage 100 \
+     --nano-hq SRR32410565_q20.fastq \
+     -o flye_output_q20
+```
+
+```--genome-size 4.5m``` provides an approximate genome length for Salmonella enterica, enabling Flye to optimize graph construction and coverage expectations.
+
+```--asm-coverage 100``` instructs Flye to use the longest reads up to ~100× coverage for initial repeat graph construction, improving computational efficiency while preserving assembly quality.
+
+```--nano-hq``` is appropriate for high-accuracy ONT chemistries and enables internal error correction tuned for improved base quality.
+
+Assembly metrics and contig information were obtained from Flye output files, including statistics describing total assembly length, number of contigs, N50, and coverage estimates, which are used for downstream evaluation and comparison.
 
 ### 4. Reference-based alignment and file processing
 To compare the assembly to sequencing reads and support downstream inspection, alignments were generated using minimap2. Minimap2 was run using the ONT mapping preset and configured to output alignments in SAM format using 32 threads. The resulting SAM file was intended for conversion into compressed, indexed formats for visualization. SAM outputs were converted to BAM, sorted, and indexed using samtools to ensure compatibility with genome browsers and efficient navigation across the genome.
