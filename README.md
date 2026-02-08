@@ -45,7 +45,7 @@ Overall, advances in ONT sequencing chemistry, read preprocessing, and long-read
 
 
 
-### Proposed Methods
+## Methods
 
 ---
 
@@ -58,7 +58,7 @@ Because ONT datasets typically contain heterogeneous read lengths and variable p
 
 ### 2. Read quality control and filtering
 
-### Initial quality assessment
+#### Initial quality assessment
 Raw ONT reads were first evaluated using NanoPlot to characterize read length distributions, sequencing yield, and per-read quality metrics.
 
 ```
@@ -67,7 +67,7 @@ NanoPlot --fastq SRR32410565.fastq -o nanoplot_output
 
 The generated HTML report (NanoPlot-report.html) was inspected to determine whether the dataset contained sufficient long, high-quality reads to support de novo assembly.
 
-### Read filtering
+#### Read filtering
 
 Reads were then filtered using Filtlong to preferentially retain longer and higher-quality sequences while discarding reads likely to introduce assembly errors. The following thresholds were applied:
 
@@ -122,10 +122,10 @@ The resulting polished consensus sequence (medaka_polish/consensus.fasta) was us
 
 ### 4. Reference-based alignment and file processing
 
-### Reference genome
+#### Reference genome
 The *Salmonella enterica* reference genome (accession GCF_000006945.2) was downloaded from NCBI using the datasets command-line tool.
 
-### Read-to-reference alignment
+#### Read-to-reference alignment
 
 To evaluate mapping performance, coverage uniformity, and enable variant calling, filtered reads were aligned to the reference genome using minimap2 with parameters optimized for ONT data.
 ```
@@ -142,7 +142,7 @@ samtools sort reads_vs_ref.bam -o reads_vs_ref.sorted.bam
 samtools index reads_vs_ref.sorted.bam
 ```
 
-### Assembly-to-reference alignment
+#### Assembly-to-reference alignment
 
 To assess structural concordance between the polished assembly and the reference genome, the Medaka consensus was aligned using minimap2 with assembly-aware presets.
 ```
@@ -158,14 +158,14 @@ SAM output was similarly converted into compressed, sorted, and indexed BAM form
 ### 5. Variant calling
 Small variants were identified from the read-to-reference alignments using Clair3, a deep learning–based variant caller optimized for long-read sequencing data.
 
-### Reference preparation
+#### Reference preparation
 Prior to variant calling, the reference FASTA was indexed:
 
 ```
 samtools faidx ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna
 ```
 
-### Running Clair3
+#### Running Clair3
 
 Variant calling was performed using the sorted BAM file generated from minimap2. Analyses were configured for haploid bacterial genomes and executed using ONT-specific models.
 ``` --platform ont ```  applies ONT-specific error models
@@ -176,7 +176,7 @@ Variant calling was performed using the sorted BAM file generated from minimap2.
 ### 6. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
 
-### Coverage Analysis
+#### Coverage Analysis
 Read coverage across the reference genome was visualized using R (version 4.x) with the following packages:
 
 ggplot2 - for creating publication-quality plots
@@ -189,11 +189,11 @@ Coverage metrics were extracted from the sorted BAM file using samtools coverage
 
 Complete R scripts are available in the repository.
 
-### Variant Density Visualization
+#### Variant Density Visualization
 Genome-wide variant distribution was visualized using a circular plot created with R package circlize and tidyverse. Variants were filtered for quality scores Q≥20 from the Clair3 VCF output. The circular plot displays:
 Script available in the repository. 
 
-### 7. Results 
+## Results 
 
 #### Assembly Quality and Alignment to Reference
 
@@ -203,12 +203,12 @@ The Medaka-polished assembly produced three contigs with a total length of 5,104
 
 Raw read alignment to the reference genome showed 183,082 reads aligning to the chromosome (NC_003197.2), achieving 97.83% coverage at a mean depth of 150.97x with a mean mapping quality of 59.5. The plasmid (NC_003277.2) had 4,186 aligned reads with 45.74% coverage at a mean depth of 98.02x and a mean mapping quality of 51.7. Mean base quality scores were 41.3 for the chromosome and 41.6 for the plasmid. Variant calling using Clair3 with quality filtering (Q≥20) identified 9,658 variants across the genome, comprising 8,647 SNPs (89.5%), 421 insertions (4.4%), and 590 deletions (6.1%). The chromosome contained 2,295 variants across 4.86 Mb (0.47 variants per kb), while the plasmid contained 7,363 variants across 0.09 Mb (82.0 variants per kb), representing a 174-fold higher variant density on the plasmid. Circular visualization of variant density showed relatively uniform SNP distribution across the chromosome with occasional concentration zones, while plasmid variants clustered in regions that aligned to the reference sequence.
 
-### 8. Discussion 
-### Assembly Quality and Workflow Success
+## Discussion 
+#### Assembly Quality and Workflow Success
 The genome assembly pipeline successfully produced a high-quality draft genome of the Salmonella enterica strain, achieving 95.67% coverage of the reference genome. The N50 of 3.3 Mb and collapse into just three contigs demonstrates that Nanopore long-read sequencing combined with Flye assembly and Medaka polishing effectively resolved the genome structure. Chromosome alignment showed 97.42% coverage with high mapping quality (MAPQ=60), while read-to-reference alignment confirmed adequate sequencing depth (151× mean coverage) and accurate base calling (Q=41.3).
 The 2,295 chromosomal variants (0.47 variants/kb) likely represent genuine strain-level differences from the reference strain LT2, consistent with natural genomic variation within Salmonella populations (Robertson et al., 2023). The 25 misassemblies and mismatch rate of 27.10 per 100 kbp are within acceptable ranges for Nanopore-only assemblies and could be further reduced through hybrid assembly with Illumina short reads.
 
-### Plasmid Divergence and Biological Implications
+#### Plasmid Divergence and Biological Implications
 The most striking finding is the substantial divergence of the assembled plasmid from the reference plasmid pSLT (NC_003277.2). While raw reads showed 45.74% coverage of the reference at 98× depth, the assembled plasmid exhibited 0% alignment to pSLT, indicating a fundamentally different plasmid is present in this strain. This interpretation is strongly supported by the extraordinarily high variant density (82.0 variants/kb)—174-fold higher than the chromosome—suggesting misalignments from forcing reads onto an incorrect reference rather than true polymorphisms.
 
 The reference plasmid pSLT, originally characterized from S. Typhimurium LT2, is a 94-kb conjugative virulence plasmid containing 108 coding sequences, including the spv operon (spvRABCD) that contributes to systemic virulence (McClelland et al., 2001). McClelland et al. demonstrated that pSLT is self-transmissible at rates up to 3 × 10⁻⁴ due to homologues of the F-factor tra operon, and estimated copy numbers of 1.4–3.1 under various growth conditions. Importantly, only three pSLT genes showed homology to other Salmonella serovars (S. Typhi, S. Paratyphi A, S. Paratyphi B), as these strains typically lack this plasmid. However, 50 pSLT genes had close homologues in plasmids from other Salmonella serovars, suggesting a family of related conjugative plasmids circulates within the genus.
