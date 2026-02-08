@@ -140,12 +140,6 @@ minimap2 -ax asm5 -t 4 \
 
 SAM output was similarly converted into compressed, sorted, and indexed BAM format to enable efficient querying and visualization.
 
-```
-samtools view -bS assembly_vs_ref.sam > assembly_vs_ref.bam
-samtools sort assembly_vs_ref.bam -o assembly_vs_ref.sorted.bam
-samtools index assembly_vs_ref.sorted.bam
-```
-
 ---
 
 ### 5. Variant calling
