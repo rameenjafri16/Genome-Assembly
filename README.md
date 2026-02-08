@@ -40,9 +40,30 @@ Because ONT datasets typically contain heterogeneous read lengths and variable p
 
 
 ### 2. Read quality control and filtering
-Read quality was assessed both before and after filtering using NanoPlot, which generates summary statistics and an HTML report describing read length distributions and per-read quality patterns for long-read sequencing data. NanoPlot was used descriptively to evaluate whether the raw dataset contained sufficient read length and quality for de novo genome assembly, and to confirm that filtering improved overall read quality.
 
-Reads were filtered using Filtlong to remove short and low-quality reads. Filtering thresholds were chosen to retain informative long reads while discarding reads likely to introduce errors during assembly. Reads shorter than 1000 bp were removed (--min_length 1000), only the top 90% of reads ranked by quality were retained (--keep_percent 90), and reads with mean quality scores below Q20 were excluded (-q 20). The filtered FASTQ output was then re-evaluated with NanoPlot to confirm improved read quality and a clear cutoff corresponding to the applied thresholds.
+### Initial quality assessment
+Raw ONT reads were first evaluated using NanoPlot to characterize read length distributions, sequencing yield, and per-read quality metrics.
+
+```NanoPlot --fastq SRR32410565.fastq -o nanoplot_output```
+
+The generated HTML report (NanoPlot-report.html) was inspected to determine whether the dataset contained sufficient long, high-quality reads to support de novo assembly.
+
+### Read filtering
+
+Reads were then filtered using Filtlong to preferentially retain longer and higher-quality sequences while discarding reads likely to introduce assembly errors. The following thresholds were applied:
+
+- minimum read length: 1000 bp
+
+- retain the best 90% of reads by quality
+
+- minimum mean read quality: Q20
+
+```
+filtlong --min_length 1000 --keep_percent 90 -q 20 \
+  SRR32410565.fastq > SRR32410565_q20.fastq
+```
+Filtering reduced low-quality tails and enriched for longer reads suitable for accurate repeat resolution during assembly.
+
 
 ### 3. Genome assembly
 Filtered reads were assembled de novo using Flye with the --nano-hq preset, which is intended for higher-accuracy nanopore reads. Flye was selected because it is optimized for long-read assembly and can generate contiguous assemblies from error-prone long reads. The assembly produced a single contig, consistent with a highly contiguous bacterial genome assembly suitable for downstream comparison to a reference genome.
