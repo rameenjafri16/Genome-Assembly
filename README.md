@@ -7,9 +7,22 @@
   - [Sequencing data acquisition and characteristics](#1-sequencing-data-acquisition-and-characteristics)
   - [Read quality control and filtering](#2-read-quality-control-and-filtering)
   - [Genome assembly](#3-genome-assembly)
+  - [Assembly polishing](#31-assembly-polishing)
   - [Reference-based alignment and file processing](#4-reference-based-alignment-and-file-processing)
-  - [Visualization](#5-visualization)
+  - [Variant calling](#5-variant-calling)
+  - [Visualization](#6-visualization)
+  - [Coverage Analysis](#coverage-analysis)
+  - [Variant Density Visualization](#variant-density-visualization)
+- [Results](#7-results)
+  - [Assembly Quality and Alignment to Reference](#assembly-quality-and-alignment-to-reference)
+  - [Read Alignment and Variant Analysis](#read-alignment-and-variant-analysis)
+- [Discussion](#8-discussion)
+  - [Assembly Quality and Workflow Success](#assembly-quality-and-workflow-success)
+  - [Plasmid Divergence and Biological Implications](#plasmid-divergence-and-biological-implications)
 - [Citations](#citations)
+- [Software & Resources](#software--resources)
+- [Software Versions & Reproducibility](#software-versions--reproducibility)
+
 
 ## General Overview 
 This project processes long-read sequencing data generated using Oxford Nanopore Technologies (ONT) to assemble the genome of Salmonella enterica. Raw sequencing reads are first inspected and filtered to assess read length and quality, ensuring that low-quality and short reads are removed prior to assembly. The filtered reads are then assembled de novo using the Flye assembler, producing a highly contiguous genome assembly.
