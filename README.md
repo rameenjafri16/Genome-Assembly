@@ -163,6 +163,34 @@ Variant calling was performed using the sorted BAM file generated from minimap2.
 ### 6. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
 
+### Coverage Analysis
+Read coverage across the reference genome was visualized using R (version 4.x) with the following packages:
+
+ggplot2 - for creating publication-quality plots
+dplyr - for data manipulation
+tidyr - for data reshaping
+gridExtra - for multi-panel figure layout
+scales - for axis formatting
+
+Coverage metrics were extracted from the sorted BAM file using samtools coverage, which provided per-contig statistics including mean depth, coverage percentage, and mapping quality. The R scripts (coverage_simple.R and coverage_analysis.R) generated bar plots comparing coverage metrics between the chromosome (NC_003197.2) and plasmid (NC_003277.2).
+
+Complete R scripts are available in the repository.
+
+### Variant Density Visualization
+Genome-wide variant distribution was visualized using a circular plot created with R package circlize and tidyverse. Variants were filtered for quality scores Q≥20 from the Clair3 VCF output. The circular plot displays:
+Script available in the repository. 
+
+### 7. Results 
+
+#### Assembly Quality and Alignment to Reference
+
+The Medaka-polished assembly produced three contigs with a total length of 5,104,809 bp, compared to the reference genome length of 4,951,383 bp. The assembly achieved an N50 of 3,318,771 bp with the largest contig spanning 3,318,771 bp. QUAST analysis showed that 95.67% of the reference genome was covered by the assembly, with a duplication ratio of 1.002. The assembly contained 25 misassemblies across 2 contigs, with 10 local misassemblies and a mismatch rate of 27.10 per 100 kbp. When aligned to the reference genome using minimap2, 96% of assembly contigs mapped successfully, with 97.42% of the chromosome (NC_003197.2) covered at a mean depth of 0.98x and a mean mapping quality of 60. The plasmid (NC_003277.2) showed 0% coverage in the assembly-to-reference alignment. The assembly's GC content was 52.19%, compared to the reference GC content of 52.24%. The largest aligned segment was 953,688 bp, with an NA50 of 460,923 bp.
+
+#### Read Alignment and Variant Analysis
+
+Raw read alignment to the reference genome showed 183,082 reads aligning to the chromosome (NC_003197.2), achieving 97.83% coverage at a mean depth of 150.97x with a mean mapping quality of 59.5. The plasmid (NC_003277.2) had 4,186 aligned reads with 45.74% coverage at a mean depth of 98.02x and a mean mapping quality of 51.7. Mean base quality scores were 41.3 for the chromosome and 41.6 for the plasmid. Variant calling using Clair3 with quality filtering (Q≥20) identified 9,658 variants across the genome, comprising 8,647 SNPs (89.5%), 421 insertions (4.4%), and 590 deletions (6.1%). The chromosome contained 2,295 variants across 4.86 Mb (0.47 variants per kb), while the plasmid contained 7,363 variants across 0.09 Mb (82.0 variants per kb), representing a 174-fold higher variant density on the plasmid. Circular visualization of variant density showed relatively uniform SNP distribution across the chromosome with occasional concentration zones, while plasmid variants clustered in regions that aligned to the reference sequence.
+
+### 8. Discussion 
 
 ## Citations 
 Zhang, T., Li, H., Ma, S., Cao, J., Liao, H., Huang, Q., & Chen, W. (2023). The newest Oxford Nanopore R10.4.1 full-length 16S rRNA sequencing enables the accurate resolution of species-level microbial community profiling. Applied and environmental microbiology, 89(10), e0060523. https://doi.org/10.1128/aem.00605-23
