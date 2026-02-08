@@ -32,7 +32,7 @@ Overall, advances in ONT sequencing chemistry, read preprocessing, and long-read
 
 
 
-## Proposed Methods
+### Proposed Methods
 
 ---
 
@@ -148,7 +148,25 @@ samtools index assembly_vs_ref.sorted.bam
 
 ---
 
-### 5. Visualization
+### 5. Variant calling
+Small variants were identified from the read-to-reference alignments using Clair3, a deep learning–based variant caller optimized for long-read sequencing data.
+
+### Reference preparation
+Prior to variant calling, the reference FASTA was indexed:
+
+```
+samtools faidx ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna
+```
+
+### Running Clair3
+
+Variant calling was performed using the sorted BAM file generated from minimap2. Analyses were configured for haploid bacterial genomes and executed using ONT-specific models.
+``` --platform ont ```  applies ONT-specific error models
+``` --include_all_ctgs```  evaluate every reference contig
+``` --haploid_precise```  use assumptions appropriate for haploid genomes
+``` --no_phasing_for_fa```  disable haplotype phasing
+
+### 6. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
 
 
