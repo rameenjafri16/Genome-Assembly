@@ -33,11 +33,15 @@ Overall, advances in ONT sequencing chemistry, read preprocessing, and long-read
 
 
 ## Proposed Methods
-### Sequencing data acquisition and characteristics
+
+---
+
+### 1. Sequencing data acquisition and characteristics
 Oxford Nanopore long-read sequencing data for *Salmonella enterica* were obtained from the NCBI Sequence Read Archive (SRA) under accession **SRR32410565** :contentReference[oaicite:1]{index=1}. Reads were provided in FASTQ format and generated using R10.4.1 chemistry.
 
 Because ONT datasets typically contain heterogeneous read lengths and variable per-read quality, preprocessing steps were performed prior to genome assembly to remove short or low-confidence reads that could negatively influence graph construction and polishing.
 
+---
 
 ### 2. Read quality control and filtering
 
@@ -66,6 +70,7 @@ filtlong --min_length 1000 --keep_percent 90 -q 20 \
 ```
 Filtering reduced low-quality tails and enriched for longer reads suitable for accurate repeat resolution during assembly.
 
+---
 
 ### 3. Genome assembly
 Filtered reads were assembled de novo using Flye, a repeat-graph–based assembler optimized for long, error-prone nanopore sequencing data.
@@ -100,13 +105,12 @@ medaka_consensus \
 ```
 The resulting polished consensus sequence (medaka_polish/consensus.fasta) was used for subsequent reference comparisons, quality assessment, and variant analysis.
 
+---
 
 ### 4. Reference-based alignment and file processing
 
 ### Reference genome
 The *Salmonella enterica* reference genome (accession GCF_000006945.2) was downloaded from NCBI using the datasets command-line tool.
-
----
 
 ### Read-to-reference alignment
 
@@ -141,6 +145,8 @@ samtools view -bS assembly_vs_ref.sam > assembly_vs_ref.bam
 samtools sort assembly_vs_ref.bam -o assembly_vs_ref.sorted.bam
 samtools index assembly_vs_ref.sorted.bam
 ```
+
+---
 
 ### 5. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
