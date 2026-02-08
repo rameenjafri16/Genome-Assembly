@@ -87,7 +87,7 @@ flye -t 4 \
 Assembly metrics and contig information were obtained from Flye output files, including statistics describing total assembly length, number of contigs, N50, and coverage estimates, which are used for downstream evaluation and comparison.
 
 
-## 3.1 Assembly polishing
+### 3.1 Assembly polishing
 Although long-read assemblers generate highly contiguous genomes, residual base-level errors may remain due to systematic sequencing inaccuracies. To improve consensus accuracy, the Flye assembly was polished using Medaka, a neural network–based polishing tool developed for Oxford Nanopore data.
 
 ```
@@ -102,11 +102,48 @@ The resulting polished consensus sequence (medaka_polish/consensus.fasta) was us
 
 
 ### 4. Reference-based alignment and file processing
-To compare the assembly to sequencing reads and support downstream inspection, alignments were generated using minimap2. Minimap2 was run using the ONT mapping preset and configured to output alignments in SAM format using 32 threads. The resulting SAM file was intended for conversion into compressed, indexed formats for visualization. SAM outputs were converted to BAM, sorted, and indexed using samtools to ensure compatibility with genome browsers and efficient navigation across the genome.
+
+### Reference genome
+The *Salmonella enterica* reference genome (accession GCF_000006945.2) was downloaded from NCBI using the datasets command-line tool.
+
+---
+
+### Read-to-reference alignment
+
+To evaluate mapping performance, coverage uniformity, and enable variant calling, filtered reads were aligned to the reference genome using minimap2 with parameters optimized for ONT data.
+```
+minimap2 -ax map-ont -t 4 \
+  ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna \
+  SRR32410565.fastq > reads_vs_ref.sam
+```
+
+SAM output was converted into compressed, sorted, and indexed BAM format to enable efficient querying and visualization.
+
+```
+samtools view -bS reads_vs_ref.sam > reads_vs_ref.bam
+samtools sort reads_vs_ref.bam -o reads_vs_ref.sorted.bam
+samtools index reads_vs_ref.sorted.bam
+```
+
+### Assembly-to-reference alignment
+
+To assess structural concordance between the polished assembly and the reference genome, the Medaka consensus was aligned using minimap2 with assembly-aware presets.
+```
+minimap2 -ax asm5 -t 4 \
+  ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna \
+  medaka_polish/consensus.fasta > assembly_vs_ref.sam
+```
+
+SAM output was similarly converted into compressed, sorted, and indexed BAM format to enable efficient querying and visualization.
+
+```
+samtools view -bS assembly_vs_ref.sam > assembly_vs_ref.bam
+samtools sort assembly_vs_ref.bam -o assembly_vs_ref.sorted.bam
+samtools index assembly_vs_ref.sorted.bam
+```
 
 ### 5. Visualization
 Alignments were visualized using the Integrative Genomics Viewer (IGV). The assembled genome and the sorted, indexed BAM file were loaded into IGV to inspect alignment consistency and coverage patterns across the contig. Visualization enabled qualitative assessment of whether reads mapped cleanly to the assembly and whether any regions showed unusual coverage patterns that could indicate assembly artifacts or difficult-to-map regions.
-
 
 
 ## Citations 
