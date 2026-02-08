@@ -17,7 +17,6 @@ This project processes long-read sequencing data generated using Oxford Nanopore
 To evaluate assembly quality, the resulting contig is compared to a reference genome obtained from the National Center for Biotechnology Information (NCBI) using minimap2 for long-read alignment. Alignment outputs are processed and visualized using genome browser tools to assess coverage patterns and mapping consistency across the assembly. Together, this workflow integrates quality control, assembly, alignment, and visualization to evaluate the feasibility, advantages, and limitations of long-read genome assembly and reference-based comparison for bacterial genomes.
 
 
-
 ## Introduction
 Long-read sequencing became widely accessible with the release of the MinION by Oxford Nanopore Technologies (ONT) in 2014, enabling real-time sequencing of native DNA and RNA (Peng et al., 2025). Since then, additional long-read platforms have emerged, including Pacific Biosciences (PacBio) and high-throughput systems such as QitanTech and CycloneSEQ (Peng et al., 2025). These platforms differ in accuracy, cost, and accessibility, influencing their suitability for routine bacterial genome assembly (Peng et al., 2025). PacBio HiFi sequencing can achieve base-level accuracies exceeding 99.99% but requires expensive instrumentation and infrastructure, limiting its use in smaller laboratories and field-based applications (Peng et al., 2025). Other long-read platforms can generate reads of sufficient length for genome assembly but often exhibit lower base-level accuracy, with reported average read lengths of approximately 11.6 kb and quality scores around Q14.4 (Peng et al., 2025).
 
@@ -34,8 +33,11 @@ Overall, advances in ONT sequencing chemistry, read preprocessing, and long-read
 
 
 ## Proposed Methods
-### 1. Sequencing data acquisition and characteristics
-Long-read sequencing data were obtained from the NCBI Sequence Read Archive under accession SRR32410565 and correspond to Salmonella enterica. The dataset consists of Oxford Nanopore sequencing reads in FASTQ format generated using R10 chemistry, which produces long reads with variable length and base quality. Because long-read datasets often contain a mixture of high- and low-quality reads, quality control and filtering were performed prior to genome assembly.
+### Sequencing data acquisition and characteristics
+Oxford Nanopore long-read sequencing data for *Salmonella enterica* were obtained from the NCBI Sequence Read Archive (SRA) under accession **SRR32410565** :contentReference[oaicite:1]{index=1}. Reads were provided in FASTQ format and generated using R10.4.1 chemistry.
+
+Because ONT datasets typically contain heterogeneous read lengths and variable per-read quality, preprocessing steps were performed prior to genome assembly to remove short or low-confidence reads that could negatively influence graph construction and polishing.
+
 
 ### 2. Read quality control and filtering
 Read quality was assessed both before and after filtering using NanoPlot, which generates summary statistics and an HTML report describing read length distributions and per-read quality patterns for long-read sequencing data. NanoPlot was used descriptively to evaluate whether the raw dataset contained sufficient read length and quality for de novo genome assembly, and to confirm that filtering improved overall read quality.
