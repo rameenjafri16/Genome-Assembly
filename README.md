@@ -15,7 +15,7 @@
   - [Variant Density Visualization](#variant-density-visualization)
 - [Results](#results)
   - [Assembly Quality and Alignment to Reference](#assembly-quality-and-alignment-to-reference)
-  - [Read Alignment and Variant Analysis](#read-alignment-and-variant-analysis)
+  - [Read Alignment and Variant Analysis](#read-alignment-to-reference-genome) 
 - [Discussion](#discussion)
   - [Assembly Quality and Workflow Success](#assembly-quality-and-workflow-success)
   - [Plasmid Divergence and Biological Implications](#plasmid-divergence-and-biological-implications)
