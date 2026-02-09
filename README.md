@@ -3,7 +3,7 @@
 ## Table of Contents
 - [General Overview](#general-overview)
 - [Introduction](#introduction)
-- [Methods](#-methods)
+- [Methods](#methods)
   - [Sequencing data acquisition and characteristics](#1-sequencing-data-acquisition-and-characteristics)
   - [Read quality control and filtering](#2-read-quality-control-and-filtering)
   - [Genome assembly](#3-genome-assembly)
@@ -203,7 +203,9 @@ Raw read alignment to the reference genome showed 183,082 reads aligning to the 
 The chromosome achieved nearly complete breadth of coverage (97.83%) at high mean depth (~151×) and mapping quality near maximum, indicating reliable representation of chromosomal sequence in the read data. In contrast, the plasmid showed substantially lower breadth of coverage (45.74%), despite similar read depth in regions where alignment occurred. This pattern suggests that only portions of the plasmid are present or sufficiently similar to the reference, consistent with structural divergence or partial absence.
 
 <img width="4800" height="4200" alt="coverage_analysis" src="https://github.com/user-attachments/assets/c9555e69-34bf-4271-b3db-b04af5bcfd2e" />
-*Figure 1:* Assembly quality metrics and comparison to reference)
+
+*Figure 1:* 
+Assembly quality metrics and comparison to reference)
 
 #### Visual Inspection of Read Alignments
 Alignments were inspected using the Integrative Genomics Viewer (IGV) to assess mapping quality and identify potential assembly artifacts. Visual inspection confirmed that reads mapped consistently across most of the chromosome, with few abrupt coverage changes or large gaps. Mismatch patterns appeared dispersed rather than clustered, suggesting that the majority of called variants reflect genuine sequence divergence rather than systematic mapping errors.
