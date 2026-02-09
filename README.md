@@ -3,7 +3,7 @@
 ## Table of Contents
 - [General Overview](#general-overview)
 - [Introduction](#introduction)
-- [Proposed Methods](#proposed-methods)
+- [Methods](#-methods)
   - [Sequencing data acquisition and characteristics](#1-sequencing-data-acquisition-and-characteristics)
   - [Read quality control and filtering](#2-read-quality-control-and-filtering)
   - [Genome assembly](#3-genome-assembly)
