@@ -205,7 +205,7 @@ The chromosome achieved nearly complete breadth of coverage (97.83%) at high mea
 <img width="4800" height="4200" alt="coverage_analysis" src="https://github.com/user-attachments/assets/c9555e69-34bf-4271-b3db-b04af5bcfd2e" />
 
 *Figure 1:* 
-Assembly quality metrics and comparison to reference)
+Assembly quality metrics and comparison to reference
 
 #### Visual Inspection of Read Alignments
 Alignments were inspected using the Integrative Genomics Viewer (IGV) to assess mapping quality and identify potential assembly artifacts. Visual inspection confirmed that reads mapped consistently across most of the chromosome, with few abrupt coverage changes or large gaps. Mismatch patterns appeared dispersed rather than clustered, suggesting that the majority of called variants reflect genuine sequence divergence rather than systematic mapping errors.
@@ -213,7 +213,9 @@ Alignments were inspected using the Integrative Genomics Viewer (IGV) to assess 
 For the plasmid, IGV visualization revealed multiple SNPs and short indels supported by consistent read evidence across aligned regions (Figure 1). However, coverage was fragmented with extensive gaps, confirming the quantitative finding of 45.74% reference coverage. Where reads did align, variant density was extremely high, with numerous mismatches visible across short genomic windows.
 
 <img width="1710" height="1107" alt="Screenshot 2026-02-08 at 2 00 22 PM" src="https://github.com/user-attachments/assets/094ef974-94b0-4030-8509-eb152a42df63" />
-*Figure 2:* IGV visualization of read alignments to plasmid NC_003277.2. Multiple SNPs and short indels are supported by consistent read evidence across the region, indicating genuine sequence divergence rather than sporadic mapping error. Note the fragmented coverage pattern with gaps between aligned regions.
+
+*Figure 2:* 
+IGV visualization of read alignments to plasmid NC_003277.2. Multiple SNPs and short indels are supported by consistent read evidence across the region, indicating genuine sequence divergence rather than sporadic mapping error. Note the fragmented coverage pattern with gaps between aligned regions.
 
 #### Variant Calling and Genomic Distribution
 Variant calling using Clair3 with quality filtering (Q≥20) identified 9,658 variants across the genome, comprising 8,647 SNPs (89.5%), 421 insertions (4.4%), and 590 deletions (6.1%). The distribution of variants differed dramatically between the chromosome and plasmid. The chromosome contained 2,295 variants across 4.86 Mb (0.47 variants per kb), while the plasmid contained 7,363 variants across 0.09 Mb (82.0 variants per kb), representing a 174-fold higher variant density on the plasmid.
@@ -222,13 +224,15 @@ Circular visualization of variant density revealed relatively uniform SNP distri
 
 <img width="1674" height="918" alt="image" src="https://github.com/user-attachments/assets/21abd60e-f6f6-49b1-9876-343a0082d384" />
 
-*Figure 3:* Circular representation of genome-wide coverage and variant density (Q ≥ 20). Variants are broadly distributed across the chromosome but concentrate heavily within plasmid-associated regions, consistent with elevated divergence and fragmented mapping relative to the reference.
+*Figure 3:* 
+Circular representation of genome-wide coverage and variant density (Q ≥ 20). Variants are broadly distributed across the chromosome but concentrate heavily within plasmid-associated regions, consistent with elevated divergence and fragmented mapping relative to the reference.
 
 Given the extreme variant density observed on the plasmid (174-fold higher than the chromosome), a more detailed examination of plasmid variant distribution was performed to characterize the pattern and magnitude of sequence divergence. Fine-scale variant density analysis in 100 bp windows revealed that SNPs dominate the variant landscape across the plasmid, forming dense clusters in regions where reads successfully aligned to the reference (Figure 4). Insertions and deletions occurred at lower frequency but followed similar clustering patterns. Coverage remained highly uneven across the plasmid, with several regions showing reduced or absent alignment, further supporting the conclusion that the sequenced strain carries a plasmid substantially different from the reference pSLT.
 
 <img width="3418" height="2138" alt="image" src="https://github.com/user-attachments/assets/08d873c6-fdbe-4dbd-96ab-bbd94b9c267b" />
 
-*Figure 4:* Variant density across plasmid NC_003277.2 in 100 bp windows. SNPs dominate the signal and form dense clusters across much of the plasmid, while insertions and deletions occur at lower frequency; coverage is uneven, with several regions showing reduced or absent alignment.
+*Figure 4:* 
+Variant density across plasmid NC_003277.2 in 100 bp windows. SNPs dominate the signal and form dense clusters across much of the plasmid, while insertions and deletions occur at lower frequency; coverage is uneven, with several regions showing reduced or absent alignment.
 
 ## Discussion 
 #### Assembly Quality and Workflow Success
