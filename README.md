@@ -198,7 +198,7 @@ Genome-wide variant distribution was visualized using a circular plot created wi
 The Medaka-polished assembly produced three contigs with a total length of 5,104,809 bp, compared to the reference genome length of 4,951,383 bp. The assembly achieved an N50 of 3,318,771 bp with the largest contig spanning 3,318,771 bp. QUAST analysis showed that 95.67% of the reference genome was covered by the assembly, with a duplication ratio of 1.002. The assembly contained 25 misassemblies across 2 contigs, with 10 local misassemblies and a mismatch rate of 27.10 per 100 kbp. The assembly's GC content was 52.19%, compared to the reference GC content of 52.24%. The largest aligned segment was 953,688 bp, with an NA50 of 460,923 bp.
 When the assembled contigs were aligned to the reference genome using minimap2, 96% of assembly contigs mapped successfully. The chromosome (NC_003197.2) showed 97.42% coverage at a mean depth of 0.98x and a mean mapping quality of 60. In contrast, the plasmid (NC_003277.2) showed 0% coverage in the assembly-to-reference alignment, indicating that the assembled plasmid contig does not align to the reference virulence plasmid pSLT.
 
-INSERT 6 PANEL
+<img width="4800" height="4200" alt="coverage_analysis" src="https://github.com/user-attachments/assets/c9555e69-34bf-4271-b3db-b04af5bcfd2e" />
 (Figure 2: Assembly quality metrics and comparison to reference)
 
 #### Read Alignment to Reference Genome
