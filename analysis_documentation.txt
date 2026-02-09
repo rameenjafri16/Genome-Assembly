@@ -1,0 +1,228 @@
+# Salmonella enterica Genome Analysis Documentation
+
+## Overview
+Analysis of *Salmonella enterica* genome using Oxford Nanopore sequencing data (SRR32410565) from NCBI SRA.
+
+**Data Source:** https://trace.ncbi.nlm.nih.gov/Traces/?view=run_browser&acc=SRR32410565&display=download
+
+**Reference Genome:** *Salmonella enterica* subsp. enterica serovar Typhimurium str. LT2 (GCF_000006945.2)
+
+---
+
+## Workflow Summary
+
+### 1. Environment Setup
+```bash
+conda activate genomics
+```
+
+### 2. Quality Assessment
+Quality control of raw reads using NanoPlot:
+```bash
+nanoplot --fastq SRR32410565.fastq -o nanoplot_output
+```
+
+### 3. Read Filtering
+Filtered reads to retain high-quality sequences:
+```bash
+filtlong --min_length 1000 --keep_percent 90 -q 20 SRR32410565.fastq > SRR32410565_q20.fastq
+```
+
+**Parameters:**
+- Minimum read length: 1000 bp
+- Keep top 90% of reads
+- Quality threshold: Q20
+
+### 4. Genome Assembly
+De novo assembly using Flye assembler:
+```bash
+flye -t 4 --genome-size 4.5m --asm-coverage 100 --nano-hq SRR32410565_q20.fastq -o flye_output_q20
+```
+
+**Parameters:**
+- Threads: 4
+- Estimated genome size: 4.5 Mb (based on reference genome)
+- Assembly coverage: 100x (uses longest reads for initial graph construction)
+
+**Assembly Statistics:**
+- Total length: 5,104,813 bp
+- Number of fragments: 3
+- Fragments N50: 3,318,776 bp
+- Largest fragment: 3,318,776 bp
+- Scaffolds: 0
+- Mean coverage: 147x
+
+### 5. Assembly Polishing
+Polished assembly using Medaka to correct errors:
+```bash
+medaka_consensus -i SRR32410565.fastq \
+                 -d flye_output_q20/assembly.fasta \
+                 -o medaka_polish \
+                 -t 4 \
+                 -m r1041_e82_400bps_sup_v5.0.0
+```
+
+**Model:** r1041_e82_400bps_sup_v5.0.0 (Oxford Nanopore R10.4.1 flowcell)
+
+### 6. Assembly Quality Assessment
+Evaluated assembly quality using QUAST against reference genome:
+```bash
+quast.py medaka_polish/consensus.fasta \
+         -r ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna \
+         -o quast_results \
+         --threads 4
+```
+
+### 7. Reference Genome Alignment
+
+#### Assembly vs Reference
+```bash
+minimap2 -ax asm5 -t 4 \
+  ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna \
+  medaka_polish/consensus.fasta \
+  > assembly_vs_ref.sam
+```
+
+**Purpose:** Genome comparison, structural variant detection, assembly validation
+
+#### Reads vs Reference
+```bash
+minimap2 -ax map-ont -t 4 \
+  ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna \
+  SRR32410565.fastq \
+  > reads_vs_ref.sam
+```
+
+**Purpose:** Variant calling, coverage analysis, quality assessment
+
+### 8. SAM/BAM Processing
+
+#### Reads vs Reference Alignment
+```bash
+# Convert SAM to BAM
+samtools view -bS reads_vs_ref.sam > reads_vs_ref.bam
+
+# Sort by genomic position
+samtools sort reads_vs_ref.bam -o reads_vs_ref.sorted.bam
+
+# Index for downstream analysis
+samtools index reads_vs_ref.sorted.bam
+
+# Generate alignment statistics
+samtools flagstat reads_vs_ref.sorted.bam > reads_alignment_stats.txt
+
+# Calculate per-base coverage
+samtools depth reads_vs_ref.sorted.bam > reads_coverage.txt
+
+# Generate per-contig coverage summary
+samtools coverage reads_vs_ref.sorted.bam > reads_coverage_summary.txt
+```
+
+#### Assembly vs Reference Alignment
+```bash
+# Convert and process assembly alignment
+samtools view -bS assembly_vs_ref.sam > assembly_vs_ref.bam
+samtools sort assembly_vs_ref.bam -o assembly_vs_ref.sorted.bam
+samtools index assembly_vs_ref.sorted.bam
+
+# Generate statistics
+samtools flagstat assembly_vs_ref.sorted.bam > assembly_alignment_stats.txt
+samtools coverage assembly_vs_ref.sorted.bam > assembly_coverage_summary.txt
+```
+
+### 9. Variant Calling
+Variant calling using Clair3 with Docker:
+
+```bash
+# Index reference genome
+samtools faidx ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna
+
+# Run Clair3
+docker run --rm --platform linux/amd64 \
+  -v "$PWD":"$PWD" -w "$PWD" \
+  hkubal/clair3 \
+  /opt/bin/run_clair3.sh \
+    --bam_fn=reads_vs_ref.sorted.bam \
+    --ref_fn=ncbi_dataset/data/GCF_000006945.2/GCF_000006945.2_ASM694v2_genomic.fna \
+    --threads=4 \
+    --platform=ont \
+    --model_path=/opt/models/ont \
+    --output=clair3_output \
+    --sample_name=Salmonella_sample \
+    --include_all_ctgs \
+    --haploid_precise \
+    --no_phasing_for_fa
+```
+
+### 10. Variant Statistics
+
+```bash
+# Total variants
+gunzip -c clair3_output/merge_output.vcf.gz | grep -v "^#" | wc -l
+
+# Count SNPs
+gunzip -c clair3_output/merge_output.vcf.gz | grep -v "^#" | \
+  awk '{if(length($4)==1 && length($5)==1) print}' | wc -l
+
+# Count insertions
+gunzip -c clair3_output/merge_output.vcf.gz | grep -v "^#" | \
+  awk '{if(length($4)<length($5)) print}' | wc -l
+
+# Count deletions
+gunzip -c clair3_output/merge_output.vcf.gz | grep -v "^#" | \
+  awk '{if(length($4)>length($5)) print}' | wc -l
+
+# Summary by chromosome
+gunzip -c clair3_output/merge_output.vcf.gz | grep -v "^#" | \
+  awk '{print $1}' | sort | uniq -c
+```
+
+**Variant Summary:**
+- Total variants: 9,658
+- SNPs: 8,647
+- Insertions: 421
+- Deletions: 590
+
+**Variants by Chromosome:**
+- NC_003197.2 (plasmid pSLT): 2,295 variants
+- NC_003277.2 (chromosome): 7,363 variants
+
+---
+
+## Software and Tools
+
+- **NanoPlot** - Quality assessment of nanopore sequencing data
+- **Filtlong** - Quality filtering for long reads
+- **Flye** - De novo genome assembler for long reads
+- **Medaka** - Neural network-based assembly polisher
+- **QUAST** - Quality assessment tool for genome assemblies
+- **minimap2** - Long-read alignment tool
+- **samtools** - SAM/BAM file manipulation
+- **Clair3** - Deep learning-based variant caller for long reads
+- **Docker** - Container platform (for Clair3)
+
+---
+
+## Output Files
+
+### Key Results
+- `assembly_alignment_stats.txt` - Assembly-to-reference alignment statistics
+- `assembly_coverage_summary.txt` - Assembly coverage against reference
+- `reads_coverage_summary.txt` - Read coverage summary
+- `reads_alignment_stats.txt` - Read alignment statistics
+- `clair3_output/merge_output.vcf.gz` - Called variants
+
+### Visualization
+- BAM files can be visualized using:
+  - **IGV** (Integrative Genomics Viewer) - Read and assembly alignments
+  - **Artemis** - Genome browser and comparison tool
+
+---
+
+## Notes
+
+- The assembly contains 3 contigs with high N50 value (3.3 Mb), indicating good contiguity
+- Mean coverage of 147x provides robust variant calling
+- High number of variants (9,658) compared to reference strain suggests significant genomic differences
+- Majority of variants are SNPs (89.5%)
+- Chromosome contains more variants than plasmid (as expected given size difference)
